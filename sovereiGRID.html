@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sovereign-GRID | Distributed Computing for Data Sovereignty</title>
+  <meta name="description" content="Distributed computing platform that leverages idle computational resources while maintaining data sovereignty and privacy.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --bg-card: rgba(18, 24, 38, 0.7);
+      --bg-card-hover: rgba(28, 37, 58, 0.8);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.3);
+      --accent-blue: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-emerald: #10b981;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 12px;
+      --transition: all 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 65%, rgba(99, 102, 241, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(9, 13, 22, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .brand span {
+      color: var(--accent-blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-blue);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    section {
+      padding: 5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--border-accent);
+      color: var(--accent-blue);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.25rem;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .section-lead {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin-bottom: 3rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 7rem 0 5rem;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-blue), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 750px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+
+    .hero-tag {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent-blue);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Feature & Problem Grids */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Architecture Flow */
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      position: relative;
+      margin: 3rem 0;
+    }
+
+    .flow-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .flow-step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 1rem;
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 1.2rem 1.5rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      font-weight: 600;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .badge-highlight {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Roadmap List */
+    .roadmap-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .roadmap-card {
+      background: var(--bg-card);
+      border-top: 3px solid var(--accent-blue);
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 1.75rem;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .roadmap-card h4 {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .roadmap-card ul {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .roadmap-card ul li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.25rem;
+    }
+
+    .roadmap-card ul li::before {
+      content: "•";
+      color: var(--accent-blue);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 2rem 2rem;
+      background: #05070c;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">Sovereign<span>-GRID</span></a>
+      <ul class="nav-links">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#problems">Problem</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#comparison">Comparison</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="#use-cases">Use Cases</a></li>
+      </ul>
+      <a href="https://github.com/Mallikarjun1237/Sovereign-GRID" target="_blank" rel="noopener" class="btn btn-secondary">GitHub</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="overview">
+      <span class="badge-pill">Decentralized Distributed System</span>
+      <h1>Distributed Computing for <span>Data Sovereignty</span> & Digital Independence</h1>
+      <p>Transform idle enterprise and personal computers into a private, encrypted computing grid. Stop leaking sensitive data to foreign centralized clouds.</p>
+      
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/Mallikarjun1237/Sovereign-GRID" target="_blank" rel="noopener" class="btn btn-primary">Explore Repository</a>
+        <a href="#architecture" class="btn btn-secondary">Explore Architecture</a>
+      </div>
+
+      <div class="hero-tags">
+        <span class="hero-tag">🔒 Complete Data Sovereignty</span>
+        <span class="hero-tag">🛡️ Zero-Trust End-to-End Encryption</span>
+        <span class="hero-tag">⚖️ Automated Load Balancing</span>
+        <span class="hero-tag">⚡ Fault Tolerant Recovery</span>
+        <span class="hero-tag">💻 Fully Open Source</span>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">78%</div>
+          <p>Enterprises struggling with data residency & localization laws</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">300B+</div>
+          <p>Hours of global idle computing capacity wasted annually</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">60-80%</div>
+          <p>Reduction in compute costs compared to centralized cloud instances</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">&lt; 5s</div>
+          <p>Automatic worker failure recovery & task reassignment time</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section id="problems">
+      <span class="badge-pill">The Challenge</span>
+      <h2>Why Centralized Cloud Architecture Fails</h2>
+      <p class="section-lead">Modern cloud systems introduce serious jurisdictional, security, and economic risks for sovereign institutions.</p>
+
+      <div class="grid-cards">
+        <div class="card">
+          <h3>1. Data Sovereignty Concerns</h3>
+          <p>AWS, Azure, and Google Cloud routinely process data across foreign servers. For jurisdictions enforcing GDPR or India's DPDP Act, external routing violates critical regulatory mandates.</p>
+        </div>
+        <div class="card">
+          <h3>2. Privacy & Single Points of Failure</h3>
+          <p>Centralized platforms present broad attack surfaces for government surveillance, malicious breaches ($4.29M avg. breach cost), and unauthorized third-party access.</p>
+        </div>
+        <div class="card">
+          <h3>3. Severe Cost Inefficiency</h3>
+          <p>Organizations pay exorbitant premiums for on-demand cloud clusters while their own in-house hardware and desktops sit idle for over 16 hours a day.</p>
+        </div>
+        <div class="card">
+          <h3>4. Vendor Lock-In</h3>
+          <p>Over 60% of enterprises report being constrained by proprietary APIs, egress bandwidth charges, and closed compute architectures.</p>
+        </div>
+        <div class="card">
+          <h3>5. High Latency & Bandwidth Drain</h3>
+          <p>Shipping raw data files to overseas data centers creates bottlenecks for latency-critical, real-time edge operations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture">
+      <span class="badge-pill">Technical Design</span>
+      <h2>Peer-to-Peer Grid Architecture</h2>
+      <p class="section-lead">A multi-tier sovereign workflow dividing batch computations into cryptographically verifiable sub-tasks.</p>
+
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <h4>Request Submission</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">User dispatches job payload via Dashboard UI or API.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <h4>Task Division</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Orchestrator splits execution units and coordinates dependencies.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <h4>Grid Distribution</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Isolated worker nodes securely pull encrypted task packages.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <h4>Execution & Results</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Workers execute jobs in containers; results are aggregated.</p>
+        </div>
+      </div>
+
+      <div class="grid-cards" style="margin-top: 2rem;">
+        <div class="card">
+          <h3>Orchestrator Core</h3>
+          <p>Handles request distribution, state management, worker health checks (every 30s), task reassignment, and audit compliance logging.</p>
+        </div>
+        <div class="card">
+          <h3>Isolated Worker Nodes</h3>
+          <p>Lightweight client daemons running in Docker sandboxes. Pulls jobs, executes via localized compute, and guarantees strict separation of host resources.</p>
+        </div>
+        <div class="card">
+          <h3>Frontend UI & Control</h3>
+          <p>Real-time telemetry interface showing connected compute pools, system health, task execution velocity, and compliance telemetry.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section>
+      <span class="badge-pill">Specifications</span>
+      <h2>Engineered Technology Stack</h2>
+      <div class="grid-cards" style="margin-top: 2rem;">
+        <div class="card">
+          <p style="color: var(--accent-blue); font-weight: 600;">Backend & Orchestration</p>
+          <h3 style="margin-top: 0.25rem;">Node.js / Express</h3>
+          <p>Lightweight event-driven orchestrator managing concurrent worker connections, task dispatch, and status aggregations.</p>
+        </div>
+        <div class="card">
+          <p style="color: var(--accent-blue); font-weight: 600;">Sandboxed Runtime</p>
+          <h3 style="margin-top: 0.25rem;">Docker & Compose</h3>
+          <p>Zero-dependency worker setups running isolated container modules across varied hardware and OS setups.</p>
+        </div>
+        <div class="card">
+          <p style="color: var(--accent-blue); font-weight: 600;">Real-Time Transport</p>
+          <h3 style="margin-top: 0.25rem;">WebSockets & TLS 1.3</h3>
+          <p>Bidirectional sub-millisecond protocol channels with mutual TLS encryption across every orchestrator-worker path.</p>
+        </div>
+        <div class="card">
+          <p style="color: var(--accent-blue); font-weight: 600;">Data Layer & Auth</p>
+          <h3 style="margin-top: 0.25rem;">MongoDB & RBAC</h3>
+          <p>Non-relational job queue document store paired with JWT-secured role-based task policies.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section id="comparison">
+      <span class="badge-pill">Matrix</span>
+      <h2>Competitive Analysis</h2>
+      <p class="section-lead">How Sovereign-GRID stacks up against traditional cloud and blockchain networks.</p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Sovereign-GRID</th>
+              <th>AWS / Azure / GCP</th>
+              <th>Traditional HPC</th>
+              <th>Blockchain (Golem/iExec)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Data Sovereignty</strong></td>
+              <td><span class="badge-highlight">Complete Local Control</span></td>
+              <td>Vendor Controlled</td>
+              <td>Internal Only</td>
+              <td>Public / Shared Network</td>
+            </tr>
+            <tr>
+              <td><strong>Cost Profile</strong></td>
+              <td><span class="badge-highlight">60-80% Savings</span></td>
+              <td>High Recurring Premiums</td>
+              <td>Massive Upfront CapEx</td>
+              <td>Volatile Crypto Tokens</td>
+            </tr>
+            <tr>
+              <td><strong>Deployment Speed</strong></td>
+              <td><span class="badge-highlight">Days</span></td>
+              <td>Minutes</td>
+              <td>Months</td>
+              <td>Weeks</td>
+            </tr>
+            <tr>
+              <td><strong>Compliance</strong></td>
+              <td><span class="badge-highlight">Built-in Audit Trails</span></td>
+              <td>Shared Responsibility</td>
+              <td>Custom Built</td>
+              <td>Complex / Unproven</td>
+            </tr>
+            <tr>
+              <td><strong>Vendor Lock-in</strong></td>
+              <td><span class="badge-highlight">Zero (Open Standard)</span></td>
+              <td>Very High</td>
+              <td>None</td>
+              <td>Token / Protocol Bound</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Real-World Use Cases -->
+    <section id="use-cases">
+      <span class="badge-pill">Applications</span>
+      <h2>Real-World Deployment Scenarios</h2>
+      <div class="grid-cards">
+        <div class="card">
+          <h3>Banking & Financial Modeling</h3>
+          <p>Run Monte Carlo simulations, fraud identification runs, and credit risk evaluations without dispatching sensitive client data over foreign cloud boundaries.</p>
+        </div>
+        <div class="card">
+          <h3>Genomic & Scientific Research</h3>
+          <p>Colleges and laboratories link hundreds of idle desktop workstations after hours to simulate particle mechanics and genetic sequences without expensive supercomputer grants.</p>
+        </div>
+        <div class="card">
+          <h3>Private AI & LLM Fine-Tuning</h3>
+          <p>Train proprietary neural nets locally. Source IP, weights, and training datasets stay within your organization's physical network boundaries.</p>
+        </div>
+        <div class="card">
+          <h3>E-Governance & Citizen Records</h3>
+          <p>National platforms handle tax calculation and identity matching domestically, fulfilling India's DPDP Act and GDPR requirements.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap">
+      <span class="badge-pill">Milestones</span>
+      <h2>Engineering Roadmap</h2>
+      <div class="roadmap-list" style="margin-top: 2rem;">
+        <div class="roadmap-card">
+          <h4>Phase 1: Core Base</h4>
+          <ul>
+            <li>Task orchestrator service</li>
+            <li>Worker daemon & monitoring</li>
+            <li>Docker containerization</li>
+            <li>Prototype dashboard</li>
+          </ul>
+        </div>
+        <div class="roadmap-card">
+          <h4>Phase 2: Production Hardening</h4>
+          <ul>
+            <li>TLS 1.3 & task sandboxing</li>
+            <li>Automated failover recovery (&lt;5s)</li>
+            <li>Kubernetes cluster orchestration</li>
+            <li>Comprehensive audit logging</li>
+          </ul>
+        </div>
+        <div class="roadmap-card">
+          <h4>Phase 3: Enterprise Ready</h4>
+          <ul>
+            <li>Multi-tenant grid partitions</li>
+            <li>AI-driven task load balancer</li>
+            <li>Hadoop & Spark integration</li>
+            <li>Homomorphic compute plugins</li>
+          </ul>
+        </div>
+        <div class="roadmap-card">
+          <h4>Phase 4: Global Mesh</h4>
+          <ul>
+            <li>Multi-region sovereign meshes</li>
+            <li>Cross-border legal compliance</li>
+            <li>Hybrid public-private grids</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA Banner -->
+    <section style="text-align: center; border-bottom: none; padding: 6rem 0;">
+      <h2>Take Back Control of Your Infrastructure</h2>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 1rem auto 2.5rem;">Eliminate cloud lock-in, safeguard institutional data, and harness idle computing power.</p>
+      <a href="https://github.com/Mallikarjun1237/Sovereign-GRID" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">View on GitHub</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <p style="font-weight: 700; font-size: 1.1rem;">Sovereign-GRID</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Empowering Digital Sovereignty Through Distributed Computing</p>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); text-align: right;">
+        <p>Project by <strong>Mallikarjun Kn</strong></p>
+        <p><a href="https://github.com/Mallikarjun1237/Sovereign-GRID" target="_blank" rel="noopener" style="color: var(--accent-blue); text-decoration: none;">GitHub: Mallikarjun1237/Sovereign-GRID</a></p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
